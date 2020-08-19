@@ -1,0 +1,82 @@
+<div class="card" *ngIf="errorMessage">
+    <div class="card-header">
+        <b >{{errorMessage}}</b>
+    </div>
+</div>
+<div class="card" *ngIf="!errorMessage">
+    <div class="card-header">
+        <b >{{pageTitle}}</b>
+    </div>  
+    <div class='card-body'>
+      <form novalidate (ngSubmit)="save()" [formGroup] = "PatientForm">
+  
+        <div class="form-group row mb-2">
+          <label class="col-md-2 col-form-label" for="nameId">Name</label>
+          <div class="col-md-8" >
+              <input  id="nameId" class="form-control" type="text" placeholder="Patient Name (Required)" formControlName="name"
+              [ngClass]="{'is-invalid': displayValidationMessages?.name}"/>
+              <span class="invalid-feedback">{{displayValidationMessages?.name}}</span>
+          </div>
+        </div>
+  
+        <div class="form-group row mb-2">
+          <label class="col-md-2 col-form-label" for="surname">SurName</label>
+          <div class="col-md-8" >
+            <input id="surnameId" class="form-control" type="text" placeholder="Patient SurName (Required)" formControlName="surname"
+                    [ngClass]="{'is-invalid': displayValidationMessages?.surname}" />
+            <span class="invalid-feedback">{{displayValidationMessages?.surname}}</span>           
+          </div>
+        </div>
+        
+        <div class="form-group row mb-2">
+            <label class="col-md-2 col-form-label" for="dob">Birthday Date</label>
+            <div class="col-md-8" >
+              <input id="releaseDateId" class="form-control" type="date" placeholder="patient dob (Required)" formControlName="dob"
+                      [ngClass]="{'is-invalid': displayValidationMessages?.dob }"/>
+              <span class="invalid-feedback">{{displayValidationMessages?.dob}}</span>
+            </div>
+          </div>
+
+        <div class="form-group row mb-2">
+            <label class="col-md-2 col-form-label" for="cityId">City</label>
+            <div class="col-md-8" >
+                <input id="city" class="form-control" type="text" placeholder="City" formControlName="cityId"
+                [ngClass]="{'is-invalid': displayValidationMessages?.cityId }"/>
+                 <span class="invalid-feedback">{{displayValidationMessages?.cityId}}</span>
+            </div>
+        </div>
+
+        <div class="form-group row mb-2">
+          <label class="col-md-2 col-form-label" for="cityId">State</label>
+          <div class="col-md-8" >
+              <input id="city" class="form-control" type="text" placeholder="State" formControlName="stateId"
+              [ngClass]="{'is-invalid': displayValidationMessages?.stateId }"/>
+               <span class="invalid-feedback">{{displayValidationMessages?.stateId}}</span>
+          </div>
+      </div>
+
+        <div class="form-group row mb-2">
+            <label class="col-md-2 col-form-label" for="gender">Gender</label>
+            <div class="col-md-8" >
+              <input id="gender" class="form-control" type="text" placeholder="Gender" formControlName="gender"
+                [ngClass]="{'is-invalid': displayValidationMessages?.gender }"/>
+                 <span class="invalid-feedback">{{displayValidationMessages?.gender}}</span>
+            </div>
+          </div>
+        
+        <div class="form-group row mb-2">
+            <div class="offset-md-2 col-md-6">
+              <button class="btn btn-success mr-3" type="submit" style="widows: 60px;"
+                      [title]="PatientForm.valid ? 'Save patient details' : 'Disabled until the data is not valid'"
+                      [disabled]="!PatientForm.valid" >
+                      <i class="fa fa-floppy-o m-r-3"></i> Save</button>
+              <button class="btn btn-secondary mr-3" type="button" style="widows: 60px;" *ngIf="patientId == 0" (click)="reset()">
+                  <span><i class="fa fa-undo m-r-3"></i></span> Reset</button> 
+              <button class="btn btn-warning mr-3" type="button" style="widows: 60px;" (click)="cancel()">
+                  <span><i class="fa fa-times m-r-3"></i></span> Cancel</button>
+            </div>
+        </div>
+        
+      </form>
+    </div>
+</div>

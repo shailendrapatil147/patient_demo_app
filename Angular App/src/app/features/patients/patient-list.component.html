@@ -1,0 +1,52 @@
+<div class="card">
+  <div class="card-header">
+    <b>{{pageTitle}}</b>
+  </div>
+  <div class='card-body'>
+      <!-- <div class='row'>
+        <div class='col-md-2'>Filter:</div>
+        <div class='col-md-4'>
+            <input type='text' [(ngModel)] = 'filterBy'/>
+        </div>
+      </div> -->
+      <!-- <div class='row' *ngIf ='Patients'>
+        <div class='col-md-6'>
+          <h4 *ngIf ='filterBy.length > 0'>Filtered by: {{filterBy}} </h4>
+        </div>
+      </div> -->
+      <div class='table-responsive'>
+        <table class='table'>
+          <thead>
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Gernder</th>
+              <th>Date Of Birth</th>
+            </tr>
+          </thead>
+          <tbody *ngIf ='Patients'>
+            <tr *ngFor='let Patient of filteredPatients'>
+                <!-- <td><a routerLinkActive='active' [routerLink]="['/Patientdetails', Patient.id]">  {{Patient.name}}</a></td> -->
+                <td>{{Patient.name}}</td>
+                <td>{{Patient.surName}}</td>
+                <td>{{Patient.gender}}</td>
+                <td>{{Patient.dob | date:'dd MMM yyyy'}}</td>
+                <!-- <td>
+                  <button class="btn btn-outline-primary btn-sm"
+                          [routerLink]="['/Patients', Patient.PatientId, 'edit']">
+                    Edit
+                  </button>
+                </td> -->
+            </tr>
+          </tbody>
+          <tbody *ngIf ='ErrorMessage'>
+            <tr>Error occured while fetching data from server.</tr>
+            <tr>{{ErrorMessage}}</tr>
+          </tbody>
+          <tbody *ngIf ='!ErrorMessage && !Patients'>
+            <tr>Loading...</tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+</div>

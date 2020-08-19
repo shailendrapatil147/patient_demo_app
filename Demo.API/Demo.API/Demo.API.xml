@@ -1,0 +1,134 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Demo.API</name>
+    </assembly>
+    <members>
+        <member name="M:API.Common.Error.ErrorInfo.#ctor(System.String,System.String,System.String)">
+            <summary>
+            </summary>
+            <param name="field"></param>
+            <param name="type"></param>
+            <param name="detail"></param>
+        </member>
+        <member name="P:API.Common.Error.ErrorInfo.Field">
+            <summary>
+            </summary>
+        </member>
+        <member name="P:API.Common.Error.ErrorInfo.Type">
+            <summary>
+            </summary>
+        </member>
+        <member name="P:API.Common.Error.ErrorInfo.Detail">
+            <summary>
+            </summary>
+        </member>
+        <member name="P:API.Common.Error.ErrorResponse.Code">
+            <summary>
+            </summary>
+        </member>
+        <member name="P:API.Common.Error.ErrorResponse.Message">
+            <summary>
+            </summary>
+        </member>
+        <member name="P:API.Common.Error.ErrorResponse.FieldErrors">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:Demo.API.Common.Extensions.ApiVersionExtensions.AddHeaderVersioning(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            This method will add versioning of API endpoint
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:Demo.API.Common.Extensions.CorsExtensions.UseCors(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Applies the CORS policy defined in appsettings.config
+            The appsettings should have values defined as per below format
+             "CorsSettings": {
+                "AllowedUrls" : [
+                        "www.someallowedurl1.com",
+                        "www.someallowedurl2.com"
+                    ],
+                "AllowedMethods" : [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "OPTIONS"
+                    ],
+                "AllowedHeaders" : [
+                        "origin",
+                        "pragma", 
+                        "accept",
+                        "content-type",
+                        "authorization",
+                        "cache-control",
+                        "x-xpx-api-key",
+                        "x-xpx-customerId",
+                        "x-xpx-applicationId"
+                    ]
+             }
+             
+             To Allow all use below settings
+             
+             "CorsSettings": {
+                "AllowedUrls" : [ "*" ],
+                "AllowedMethods" : [ "*" ],
+                "AllowedHeaders" : [ "*" ]
+             }
+            </summary>
+            <param name="app"></param>
+            <param name="configuration"></param>
+        </member>
+        <member name="M:Demo.API.Common.Extensions.MvcExtenxion.AddMvcCore(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Collections.Generic.List{Newtonsoft.Json.JsonConverter})">
+            <summary>
+            This method adds MVC Core to service collection.
+            Adds HandleExceptionAttribute using AddMvcOptions.
+            Adds AddNewtonsoftJson with default serializer settings as converters, handlers, formatter and resolver
+            </summary>
+        </member>
+        <member name="M:Demo.API.Common.Extensions.SwaggerExtensions.AddSwagger(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            This method will add versioning of API endpoint
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:Demo.API.Common.Extensions.SwaggerExtensions.UseSwagger(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Mvc.ApiExplorer.IApiVersionDescriptionProvider)">
+            <summary>
+            Before you use this method, create below swagger settings to appsettings.json
+            Swagger : {
+                "Title":"Tile of your service",
+                "Description" : "Short description about the service",
+                "Contact" : {
+                    "Name" : "Name of the team/person to contact",
+                    "Email" : "Email of the team person to contact"
+                }
+            }
+            </summary>
+            <param name="app"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Demo.API.Common.Swagger.ConfigureSwaggerOptions.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Mvc.ApiExplorer.IApiVersionDescriptionProvider)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Demo.API.Common.Swagger.ConfigureSwaggerOptions"/> class.
+            </summary>
+            <param name="provider">The <see cref="T:Microsoft.AspNetCore.Mvc.ApiExplorer.IApiVersionDescriptionProvider">provider</see> used to generate Swagger documents.</param>
+        </member>
+        <member name="M:Demo.API.Common.Swagger.ConfigureSwaggerOptions.Configure(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
+            <inheritdoc />
+        </member>
+        <member name="M:Demo.API.Common.Swagger.SwaggerDefaultValues.Apply(Microsoft.OpenApi.Models.OpenApiOperation,Swashbuckle.AspNetCore.SwaggerGen.OperationFilterContext)">
+            <summary>
+            Applies the filter to the specified operation using the given context.
+            </summary>
+            <param name="operation">The operation to apply the filter to.</param>
+            <param name="context">The current operation filter context.</param>
+        </member>
+        <member name="M:Demo.API.Controllers.LocationController.GetAllCities">
+            <summary>
+            Get All Cities
+            </summary>
+        </member>
+    </members>
+</doc>

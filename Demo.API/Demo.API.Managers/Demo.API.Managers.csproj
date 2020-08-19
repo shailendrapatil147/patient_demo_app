@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Demo.Api.Contracts\Demo.Api.Contracts.csproj" />
+    <ProjectReference Include="..\Demo.Api.Mapper\Demo.Api.Mapper.csproj" />
+    <ProjectReference Include="..\Demo.API.Respository\Demo.API.Respository.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="iMedOneDB">
+      <HintPath>..\iMedOneDB.DLL</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
