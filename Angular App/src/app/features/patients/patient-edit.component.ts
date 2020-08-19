@@ -3,9 +3,13 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ValidatorFn } from '../../common/validatorFn';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PatientService } from '../../services/patient.service';
+import { LocationService } from '../../services/location.service';
 import { Patient } from '../../models/patient';
+import { ICity } from '../../models/city';
 import { Subscription } from 'rxjs';
 import { ValidationErrorMessenger } from '../../common/ValidationErrorMessenger';
+import { City } from 'src/app/models/city';
+import { State } from 'src/app/models/state';
 
 @Component({
   selector: 'app-patient-edit',
@@ -17,16 +21,20 @@ export class PatientEditComponent implements OnInit, OnDestroy{
   public PatientForm: FormGroup;
   public pageTitle = 'Add new patient';
   public Patient: Patient | undefined;
+  public Cities: City [] | undefined;
+  public FilteredCities: City [] | undefined;
+  public States: State [] | undefined;
   private sub: Subscription;
   private validationMessages: {[key:string]: {[key:string]: string }};
   public displayValidationMessages: {[key: string]:string} = {};
   public validationErrorMessenger: ValidationErrorMessenger;
   private PatientId:number = 0;
-
+  private _selectedStateId: number = 1;
   
   constructor(private fb: FormBuilder, private route: ActivatedRoute,
     private router: Router,
-    private PatientService: PatientService) {
+    private PatientService: PatientService,
+    private LocationService: LocationService) {
 
       this.validationMessages = {
         surname:{
@@ -38,7 +46,8 @@ export class PatientEditComponent implements OnInit, OnDestroy{
           text: 'Enter aphabhates only.'
         },
         dob:{
-          required: 'dob name is required.'
+          required: 'dob name is required.',
+          Last100YearDate: 'Enter date in between last 100 years'
         },
         gender:{
           text: 'Enter aphabhates only.'
@@ -56,6 +65,9 @@ export class PatientEditComponent implements OnInit, OnDestroy{
 
   ngOnInit() {
     this.setDefaultValues();
+    this.getAllStates();
+    this.getAllCities();
+    
     this.sub = this.route.paramMap.subscribe(
       params => {
         this.PatientId = +params.get('Id');
@@ -65,6 +77,11 @@ export class PatientEditComponent implements OnInit, OnDestroy{
     this.PatientForm.valueChanges.subscribe( value =>
       this.displayValidationMessages = this.validationErrorMessenger.getValidationErrorMessages(this.PatientForm)
     )
+
+    this.PatientForm.get("stateId").valueChanges.subscribe(selectedValue  => {
+      this.FilteredCities = selectedValue ? this.filterCities(selectedValue) : this.Cities;
+      });
+  
   }
 
   ngOnDestroy(): void {
@@ -76,18 +93,24 @@ export class PatientEditComponent implements OnInit, OnDestroy{
     this.PatientForm = this.fb.group({
       name: ['',[Validators.required]],
       surname: ['',[Validators.required]],
-      gender:[''],
-      cityId:['', [ValidatorFn.number]],
+      gender:['M'],
+      cityId:['', [ValidatorFn.number,]],
       stateId:['', [ValidatorFn.number]],
       dob:['']
     });
+
+    this.PatientForm.get("name").setValidators(ValidatorFn.text);
+    this.PatientForm.get("surname").setValidators(ValidatorFn.text);
+    this.PatientForm.get("gender").setValidators(ValidatorFn.text);
+    this.PatientForm.get("dob").setValidators(ValidatorFn.Last100YearDate);
   }
 
   getPatient(id: number) {
     this.PatientService.getPatientById(id).subscribe(
-      Patient =>{this.Patient = Patient;
+      Patient =>{
+                  this.Patient = Patient;
                   if (id != 0 &&(this.Patient == null || this.Patient.Id == 0 && this.PatientForm)) {
-                    this.errorMessage = `Enable to find Patient with id =${id}.`;
+                    this.errorMessage = `Unable to find Patient with id =${id}.`;
                   }else if(id!= 0 &&(this.Patient != null || this.Patient.Id != 0 && this.PatientForm)){
                     this.displayPatient();
                     this.pageTitle = `Edit Patient ${this.Patient.Name}`;
@@ -101,6 +124,37 @@ export class PatientEditComponent implements OnInit, OnDestroy{
       error => this.errorMessage = <any>error);
   }
 
+  getAllCities() {
+    this.LocationService.getAllCities().subscribe(
+      cities =>{
+                  this.Cities = cities;
+                  if (this.Cities == null || this.Cities == undefined) {
+                    this.errorMessage = `Unable fetch all cities`;
+                  }else if(this.Cities != undefined && this.Cities != null){
+                    //this.displayPatient();
+                  }
+      },
+      error => this.errorMessage = <any>error);
+  }
+
+  getAllStates() {
+    this.LocationService.getAllState().subscribe(
+      states =>{
+                  this.States = states;
+                  if (this.States == null || this.States == undefined) {
+                    this.errorMessage = `Unable fetch all States`;
+                  }else if(this.States != undefined && this.States != null){
+                    //this.displayPatient();
+                  }
+      },
+      error => this.errorMessage = <any>error);
+  }
+  
+  filterCities(stateId: number): ICity[] {
+    return this.Cities.filter((city : ICity) =>
+    city.stateId == stateId );
+  }
+
   displayPatient(){
     this.PatientForm.patchValue({
       name: this.Patient.Name,
@@ -109,20 +163,8 @@ export class PatientEditComponent implements OnInit, OnDestroy{
       dob: this.Patient.DOB,
       cityId: this.Patient.CityId,
       stateId: 0,
-      //releaseDate: new Date("2018-12-12")//this.Patient.releaseDate
     })
   }
-
-  // public deletePatient(){
-  //   if(this.PatientId != 0 && confirm('Do you realy want to delete Patient?')){
-  //       this.PatientService.deletePatient(this.PatientId).subscribe(
-  //         response =>{
-  //           alert('Patient deleted successfully');
-  //           this.completeAction();
-  //         },
-  //         error=> this.errorMessage == JSON.stringify(error));
-  //   }
-  // }
 
   public save(){
     if(this.PatientForm.dirty){

@@ -8,25 +8,25 @@ import { catchError, tap, map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class PatientService {
-  private patientUrl = `https://localhost:50010/`;
+  private apiBaseURL = `https://localhost:50010/`;
 
   constructor(private _httpService: HttpClient) { }
 
   getAllPatients(): Observable<IPatient[]>{
-    return this._httpService.get<IPatient[]>(`${this.patientUrl}patient/getallpatient`).pipe(
+    return this._httpService.get<IPatient[]>(`${this.apiBaseURL}patient/getallpatient`).pipe(
         //tap(data=> console.log(`Response: ${JSON.stringify(data)}`)),
         catchError(this.errorHandler));
   }
 
   getPatientById(patientId: number): Observable<IPatient>{
-    return this._httpService.get<IPatient>(`${this.patientUrl}/getpatientById?Id=${patientId}`).pipe(
+    return this._httpService.get<IPatient>(`${this.apiBaseURL}/getpatientById?Id=${patientId}`).pipe(
       //.tap((response: Response) => <IPatient>response.json()),
       catchError(this.errorHandler));
   }
 
   addPatient(Patient: Patient): Observable<IPatient>{    
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });    
-    return this._httpService.post<IPatient>(`${this.patientUrl}patient/SavePatient`, Patient, { headers: headers })
+    return this._httpService.post<IPatient>(`${this.apiBaseURL}patient/SavePatient`, Patient, { headers: headers })
       .pipe(
         tap(data => console.log('createPatient: ' + JSON.stringify(data))),
         catchError(this.errorHandler)
@@ -35,7 +35,7 @@ export class PatientService {
 
   // updatePatient(Patient: IPatient): Observable<IPatient>{
   //   const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-  //   return this._httpService.put<IPatient>(`${this.PatientsUrl}/updatePatientbyidasync`,Patient, {headers: headers})
+  //   return this._httpService.put<IPatient>(`${this.apiBaseURL}/updatePatientbyidasync`,Patient, {headers: headers})
   //   .pipe(
   //     tap(response => console.log(JSON.stringify(response))),
   //     catchError(this.errorHandler));

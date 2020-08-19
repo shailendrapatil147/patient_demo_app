@@ -1,6 +1,11 @@
 import { AbstractControl, ValidatorFn as formsValidator} from '@angular/forms';
+import {DatePipe} from '@angular/common';
 
 export class ValidatorFn{
+  dtpipe: DatePipe;
+  constructor(public datePipe: DatePipe) {
+    this.dtpipe = datePipe;
+  }
 
   static number(): formsValidator {
     return (control:AbstractControl): {[key:string]:boolean} | null =>{
@@ -48,6 +53,14 @@ export class ValidatorFn{
         return {'text': true};
     }
   
+  static Last100YearDate(control:AbstractControl): {[key:string]:boolean} | null {
+    var dt = new Date()
+    var selectedDt = new Date(control.value);
+      if(control.value === null || (selectedDt > new Date(dt.getFullYear() + -100, 1, 1) && selectedDt < dt ) || (control.pristine )){
+          return null;
+      }
+      return {'Last100YearDate': true};
+  }
   static emailMatcherValidation(firstControlName: string, secondControlName: string): formsValidator {
     return (control:AbstractControl): {[key:string]:boolean} | null =>{
   
